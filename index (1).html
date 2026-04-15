@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Artificial Intelligence — A Complete Overview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:      #0F1E3D;
+  --blue:      #1A6FBF;
+  --sky:       #3B9FE8;
+  --gold:      #F5A623;
+  --red:       #C0392B;
+  --teal:      #0D9488;
+  --purple:    #6B3FA0;
+  --green:     #27AE60;
+  --orange:    #D97706;
+  --space:     #070D1A;
+  --white:     #FFFFFF;
+  --offwhite:  #F8F9FB;
+  --lightgray: #F0F4FA;
+  --midgray:   #7A8FA6;
+  --dark:      #1A2A3A;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--space);
+  color: var(--white);
+  overflow-x: hidden;
+}
+
+/* ── NAVIGATION ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(7,13,26,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(245,166,35,0.2);
+  padding: 0 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 56px;
+}
+.nav-logo { font-family: 'JetBrains Mono', monospace; color: var(--gold); font-size: 0.8rem; letter-spacing: 0.15em; }
+.nav-links { display: flex; gap: 0.25rem; flex-wrap: wrap; }
+.nav-links a {
+  color: var(--midgray); text-decoration: none; font-size: 0.72rem;
+  padding: 0.3rem 0.6rem; border-radius: 4px;
+  transition: all 0.2s; font-weight: 500; letter-spacing: 0.04em;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--gold); background: rgba(245,166,35,0.1); }
+.nav-progress {
+  position: fixed; top: 56px; left: 0; height: 2px;
+  background: var(--gold); width: 0%; z-index: 99;
+  transition: width 0.1s;
+}
+
+/* ── SECTIONS ── */
+section {
+  min-height: 100vh;
+  display: flex; align-items: center;
+  position: relative; overflow: hidden;
+  padding: 80px 0 60px;
+}
+
+.container { width: 90%; max-width: 1100px; margin: 0 auto; }
+
+/* ── HERO ── */
+#hero {
+  background: var(--space);
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+.stars-bg {
+  position: absolute; inset: 0; overflow: hidden; pointer-events: none;
+}
+.star {
+  position: absolute; background: white; border-radius: 50%;
+  animation: twinkle var(--d, 3s) ease-in-out infinite var(--delay, 0s);
+}
+@keyframes twinkle { 0%,100%{opacity:0.2} 50%{opacity:1} }
+
+.hero-eyebrow {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+  letter-spacing: 0.3em; color: var(--gold); margin-bottom: 1.5rem;
+  opacity: 0; animation: fadeUp 0.8s 0.2s forwards;
+}
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3rem, 8vw, 7rem); font-weight: 900;
+  line-height: 1.0; margin-bottom: 0.5rem;
+  opacity: 0; animation: fadeUp 0.8s 0.4s forwards;
+}
+.hero-title span { color: var(--gold); }
+.hero-subtitle {
+  font-size: clamp(1rem, 2.5vw, 1.3rem); color: var(--midgray);
+  max-width: 640px; margin: 1.5rem auto; line-height: 1.7;
+  opacity: 0; animation: fadeUp 0.8s 0.6s forwards;
+}
+.hero-tags {
+  display: flex; flex-wrap: wrap; gap: 0.6rem; justify-content: center;
+  margin: 2rem 0; opacity: 0; animation: fadeUp 0.8s 0.8s forwards;
+}
+.hero-tags span {
+  padding: 0.4rem 1rem; border: 1px solid rgba(245,166,35,0.3);
+  border-radius: 100px; font-size: 0.78rem; color: var(--gold);
+  background: rgba(245,166,35,0.08);
+}
+.scroll-cue {
+  margin-top: 3rem; animation: bounce 2s infinite;
+  color: var(--midgray); font-size: 1.5rem;
+  opacity: 0; animation: fadeUp 0.8s 1s forwards, bounce 2s 1.8s infinite;
+}
+@keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(8px)} }
+@keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+
+/* ── SECTION HEADERS ── */
+.section-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
+  letter-spacing: 0.3em; color: var(--gold); margin-bottom: 0.75rem;
+  display: flex; align-items: center; gap: 0.75rem;
+}
+.section-label::after { content:''; flex:1; height:1px; background:rgba(245,166,35,0.25); }
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; line-height: 1.15;
+  margin-bottom: 1.5rem;
+}
+.section-title span { color: var(--gold); }
+
+/* ── SECTION BACKGROUNDS ── */
+#what   { background: var(--navy); }
+#how    { background: #0a1628; }
+#space  { background: var(--space); }
+#space2 { background: #060f1a; }
+#future { background: #0d1f3a; }
+#theology { background: #100818; }
+#misinfo  { background: #160606; }
+#trust    { background: #0a1010; }
+#conclusion { background: var(--navy); }
+
+/* ── GRID LAYOUTS ── */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+.three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+.two-col-left { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 3rem; align-items: center; }
+
+@media(max-width: 768px) {
+  .two-col, .two-col-left { grid-template-columns: 1fr; }
+  .three-col { grid-template-columns: 1fr; }
+}
+
+/* ── CARDS ── */
+.card {
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px; padding: 1.5rem;
+  transition: transform 0.3s, border-color 0.3s;
+}
+.card:hover { transform: translateY(-4px); border-color: rgba(245,166,35,0.3); }
+.card-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+.card h3 { font-size: 1.05rem; margin-bottom: 0.5rem; color: var(--sky); }
+.card p { font-size: 0.9rem; color: var(--midgray); line-height: 1.65; }
+
+.accent-card {
+  border-left: 3px solid var(--gold);
+  background: rgba(245,166,35,0.05);
+  padding: 1.25rem 1.5rem;
+  border-radius: 0 8px 8px 0;
+  margin: 1.5rem 0;
+  font-style: italic; color: rgba(255,255,255,0.8);
+  font-size: 0.95rem; line-height: 1.7;
+}
+
+.stat-box {
+  text-align: center; padding: 2rem 1rem;
+  border: 1px solid rgba(255,255,255,0.1); border-radius: 12px;
+  background: rgba(255,255,255,0.03);
+}
+.stat-number {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 900; color: var(--gold);
+}
+.stat-label { font-size: 0.8rem; color: var(--midgray); margin-top: 0.5rem; letter-spacing: 0.05em; }
+
+/* ── STEP FLOW ── */
+.steps { display: flex; gap: 0; flex-wrap: nowrap; overflow-x: auto; padding-bottom: 0.5rem; }
+.step {
+  flex: 1; min-width: 160px; position: relative;
+  background: rgba(26,111,191,0.15); border: 1px solid rgba(59,159,232,0.2);
+  border-radius: 10px; padding: 1.25rem 1rem; text-align: center;
+}
+.step + .step::before {
+  content: '→'; position: absolute; left: -18px; top: 50%; transform: translateY(-50%);
+  color: var(--sky); font-size: 1.2rem;
+}
+.step-num {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--blue); color: white;
+  font-weight: 700; font-size: 0.9rem;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 0.75rem;
+}
+.step h4 { font-size: 0.85rem; font-weight: 600; margin-bottom: 0.4rem; }
+.step p { font-size: 0.78rem; color: var(--midgray); line-height: 1.5; }
+
+/* ── BULLET LIST ── */
+.bullets { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; }
+.bullets li {
+  display: flex; gap: 0.75rem; align-items: flex-start;
+  font-size: 0.93rem; line-height: 1.6; color: rgba(255,255,255,0.85);
+}
+.bullets li::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--gold); flex-shrink: 0; margin-top: 0.55rem;
+}
+
+/* ── TIMELINE ── */
+.timeline { position: relative; padding-left: 2rem; }
+.timeline::before {
+  content: ''; position: absolute; left: 8px; top: 0; bottom: 0;
+  width: 2px; background: rgba(245,166,35,0.3);
+}
+.tl-item { position: relative; margin-bottom: 2rem; }
+.tl-item::before {
+  content: ''; position: absolute; left: -1.6rem; top: 6px;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--gold); border: 2px solid var(--space);
+}
+.tl-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
+  color: var(--gold); letter-spacing: 0.15em; margin-bottom: 0.3rem;
+}
+.tl-title { font-size: 1.05rem; font-weight: 600; margin-bottom: 0.4rem; }
+.tl-body { font-size: 0.88rem; color: var(--midgray); line-height: 1.65; }
+
+/* ── TAG CLOUD ── */
+.tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1rem 0; }
+.tag {
+  padding: 0.3rem 0.8rem; border-radius: 100px;
+  font-size: 0.78rem; font-weight: 500;
+  border: 1px solid; cursor: default;
+}
+
+/* ── CHALLENGE GRID ── */
+.challenge-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+@media(max-width:600px){ .challenge-grid{grid-template-columns:1fr;} }
+.challenge-item {
+  padding: 1rem 1.25rem;
+  border-radius: 8px; border-left: 3px solid;
+  background: rgba(255,255,255,0.03);
+}
+.challenge-item h4 { font-size: 0.92rem; margin-bottom: 0.3rem; }
+.challenge-item p { font-size: 0.82rem; color: var(--midgray); line-height: 1.55; }
+
+/* ── SCROLL REVEAL ── */
+.reveal {
+  opacity: 0; transform: translateY(28px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ── FOOTER ── */
+footer {
+  background: #040810;
+  padding: 3rem 2rem;
+  text-align: center;
+  border-top: 1px solid rgba(245,166,35,0.15);
+}
+footer p { color: var(--midgray); font-size: 0.82rem; line-height: 1.8; }
+footer .scripture {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem; color: var(--gold);
+  margin-bottom: 1rem; font-style: italic;
+}
+
+/* ── DIVIDER ── */
+.gold-rule { width: 60px; height: 3px; background: var(--gold); margin: 1.5rem 0; border-radius: 2px; }
+
+/* ── SVG ILLUSTRATIONS ── */
+.svg-wrap { display: flex; justify-content: center; align-items: center; }
+.svg-wrap svg { max-width: 100%; height: auto; }
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav>
+  <div class="nav-logo">AI // OVERVIEW</div>
+  <div class="nav-links">
+    <a href="#hero">Intro</a>
+    <a href="#what">What Is AI</a>
+    <a href="#how">How It Works</a>
+    <a href="#space">AI in Space</a>
+    <a href="#future">Future</a>
+    <a href="#theology">Theology</a>
+    <a href="#misinfo">Misinfo</a>
+    <a href="#trust">Trust</a>
+    <a href="#conclusion">Conclusion</a>
+  </div>
+</nav>
+<div class="nav-progress" id="progress"></div>
+
+<!-- ═══════════════════════════════════════════════
+     HERO
+════════════════════════════════════════════════ -->
+<section id="hero">
+  <div class="stars-bg" id="stars"></div>
+  <div class="container">
+    <p class="hero-eyebrow">EXPLORING THE FUTURE</p>
+    <h1 class="hero-title">Artificial<br><span>Intelligence</span></h1>
+    <p class="hero-subtitle">What It Is · How It Works · Where It's Going — Including Theological Implications for Christianity</p>
+    <div class="hero-tags">
+      <span>What Is AI?</span><span>How It Works</span><span>AI in Space</span>
+      <span>Future Applications</span><span>Theology</span><span>Misinformation</span><span>Trust</span>
+    </div>
+
+    <!-- Hero SVG: Brain/Neural Network -->
+    <div style="margin: 2rem auto 1rem; max-width: 340px; opacity:0; animation: fadeUp 1s 1s forwards;">
+      <svg viewBox="0 0 340 220" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#3B9FE8" stop-opacity="0.3"/>
+            <stop offset="100%" stop-color="#3B9FE8" stop-opacity="0"/>
+          </radialGradient>
+          <filter id="blur2"><feGaussianBlur stdDeviation="2"/></filter>
+        </defs>
+        <ellipse cx="170" cy="110" rx="140" ry="90" fill="url(#glow)"/>
+        <!-- Nodes -->
+        <g fill="#3B9FE8" opacity="0.9">
+          <circle cx="50"  cy="70"  r="8"/><circle cx="50"  cy="150" r="8"/>
+          <circle cx="120" cy="45"  r="8"/><circle cx="120" cy="110" r="8"/><circle cx="120" cy="175" r="8"/>
+          <circle cx="195" cy="70"  r="8"/><circle cx="195" cy="145" r="8"/>
+          <circle cx="265" cy="55"  r="8"/><circle cx="265" cy="110" r="8"/><circle cx="265" cy="165" r="8"/>
+          <circle cx="310" cy="110" r="8"/>
+        </g>
+        <!-- Connections -->
+        <g stroke="#3B9FE8" stroke-width="1" opacity="0.3" fill="none">
+          <line x1="58" y1="70" x2="112" y2="45"/><line x1="58" y1="70" x2="112" y2="110"/><line x1="58" y1="70" x2="112" y2="175"/>
+          <line x1="58" y1="150" x2="112" y2="45"/><line x1="58" y1="150" x2="112" y2="110"/><line x1="58" y1="150" x2="112" y2="175"/>
+          <line x1="128" y1="45" x2="187" y2="70"/><line x1="128" y1="45" x2="187" y2="145"/>
+          <line x1="128" y1="110" x2="187" y2="70"/><line x1="128" y1="110" x2="187" y2="145"/>
+          <line x1="128" y1="175" x2="187" y2="70"/><line x1="128" y1="175" x2="187" y2="145"/>
+          <line x1="203" y1="70" x2="257" y2="55"/><line x1="203" y1="70" x2="257" y2="110"/><line x1="203" y1="70" x2="257" y2="165"/>
+          <line x1="203" y1="145" x2="257" y2="55"/><line x1="203" y1="145" x2="257" y2="110"/><line x1="203" y1="145" x2="257" y2="165"/>
+          <line x1="273" y1="55" x2="302" y2="110"/><line x1="273" y1="110" x2="302" y2="110"/><line x1="273" y1="165" x2="302" y2="110"/>
+        </g>
+        <!-- Animated pulse node -->
+        <circle cx="195" cy="110" r="12" fill="#F5A623" opacity="0.9">
+          <animate attributeName="r" values="12;18;12" dur="2s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0.9;0.4;0.9" dur="2s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="195" cy="110" r="6" fill="#F5A623"/>
+        <!-- Labels -->
+        <text x="22" y="60" fill="#7A8FA6" font-size="9" font-family="monospace">INPUT</text>
+        <text x="275" y="200" fill="#7A8FA6" font-size="9" font-family="monospace">OUTPUT</text>
+      </svg>
+    </div>
+
+    <div class="scroll-cue">↓</div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     WHAT IS AI?
+════════════════════════════════════════════════ -->
+<section id="what">
+  <div class="container">
+    <div class="two-col">
+      <div class="reveal">
+        <p class="section-label">01</p>
+        <h2 class="section-title">What Is <span>Artificial Intelligence?</span></h2>
+        <div class="gold-rule"></div>
+        <p style="color:var(--midgray); line-height:1.75; margin-bottom:1.5rem;">
+          AI is the simulation of human intelligence by computer systems — enabling machines to <strong style="color:white">learn, reason, solve problems,</strong> and make decisions. Not consciousness. Not understanding. <em>Simulation</em> — extraordinarily powerful simulation.
+        </p>
+        <div class="accent-card">"The question is not whether machines can think — it's whether what they do is indistinguishable from thinking."</div>
+        <div class="tags" style="margin-top:1.5rem;">
+          <span class="tag" style="color:var(--sky);border-color:rgba(59,159,232,0.4);background:rgba(59,159,232,0.08);">Narrow AI — Today</span>
+          <span class="tag" style="color:var(--gold);border-color:rgba(245,166,35,0.4);background:rgba(245,166,35,0.08);">General AI — Research</span>
+          <span class="tag" style="color:var(--midgray);border-color:rgba(122,143,166,0.4);background:rgba(122,143,166,0.06);">Superintelligence — Theory</span>
+        </div>
+      </div>
+      <div class="reveal">
+        <!-- SVG: Three levels of AI -->
+        <svg viewBox="0 0 320 360" xmlns="http://www.w3.org/2000/svg">
+          <!-- Narrow AI -->
+          <rect x="10" y="240" width="300" height="110" rx="12" fill="rgba(26,111,191,0.15)" stroke="rgba(59,159,232,0.4)" stroke-width="1.5"/>
+          <text x="160" y="268" text-anchor="middle" fill="#3B9FE8" font-size="11" font-weight="bold" font-family="monospace">NARROW AI — TODAY</text>
+          <text x="160" y="287" text-anchor="middle" fill="rgba(255,255,255,0.6)" font-size="9" font-family="sans-serif">Task-specific · Siri · GPS · ChatGPT</text>
+          <text x="160" y="303" text-anchor="middle" fill="rgba(255,255,255,0.6)" font-size="9" font-family="sans-serif">Facial recognition · Spam filters</text>
+          <circle cx="40" cy="300" r="22" fill="rgba(26,111,191,0.3)" stroke="#3B9FE8" stroke-width="1.5"/>
+          <text x="40" y="294" text-anchor="middle" fill="#3B9FE8" font-size="18">🤖</text>
+          <text x="40" y="310" text-anchor="middle" fill="#3B9FE8" font-size="7">EXISTS</text>
+          <!-- General AI -->
+          <rect x="30" y="130" width="260" height="100" rx="12" fill="rgba(245,166,35,0.08)" stroke="rgba(245,166,35,0.3)" stroke-width="1.5"/>
+          <text x="160" y="157" text-anchor="middle" fill="#F5A623" font-size="11" font-weight="bold" font-family="monospace">GENERAL AI — RESEARCH</text>
+          <text x="160" y="175" text-anchor="middle" fill="rgba(255,255,255,0.6)" font-size="9" font-family="sans-serif">Human-level reasoning across all domains</text>
+          <text x="160" y="191" text-anchor="middle" fill="rgba(255,255,255,0.6)" font-size="9" font-family="sans-serif">Goal of OpenAI, DeepMind, Anthropic</text>
+          <text x="160" y="207" text-anchor="middle" fill="#F5A623" font-size="8" font-family="monospace">NOT YET ACHIEVED</text>
+          <!-- Super AI -->
+          <rect x="55" y="20" width="210" height="100" rx="12" fill="rgba(122,143,166,0.05)" stroke="rgba(122,143,166,0.2)" stroke-width="1.5"/>
+          <text x="160" y="47" text-anchor="middle" fill="#7A8FA6" font-size="11" font-weight="bold" font-family="monospace">SUPERINTELLIGENCE</text>
+          <text x="160" y="65" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="9" font-family="sans-serif">Exceeds human ability in all areas</text>
+          <text x="160" y="81" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="9" font-family="sans-serif">Highly speculative · Decades away</text>
+          <text x="160" y="97" text-anchor="middle" fill="#7A8FA6" font-size="8" font-family="monospace">THEORETICAL ONLY</text>
+          <!-- Arrow -->
+          <line x1="160" y1="120" x2="160" y2="130" stroke="rgba(245,166,35,0.3)" stroke-width="2" stroke-dasharray="4"/>
+          <line x1="160" y1="230" x2="160" y2="240" stroke="rgba(59,159,232,0.3)" stroke-width="2" stroke-dasharray="4"/>
+        </svg>
+      </div>
+    </div>
+    <div class="three-col" style="margin-top:3rem;">
+      <div class="card reveal"><div class="card-icon">📱</div><h3>Narrow AI Examples</h3><p>Everything you use today: ChatGPT, Siri, Netflix recommendations, spam filters, navigation apps, facial recognition, fraud detection.</p></div>
+      <div class="card reveal" style="--delay:0.1s"><div class="card-icon">🧠</div><h3>Why It Seems Like Thinking</h3><p>Pattern recognition at massive scale produces outputs indistinguishable from reasoning — but without comprehension, consciousness, or judgment.</p></div>
+      <div class="card reveal" style="--delay:0.2s"><div class="card-icon">📊</div><h3>What Powers It</h3><p>Data, algorithms, and computing power. The same concepts since the 1950s — transformed by exponential growth in all three over the last decade.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     HOW IT WORKS
+════════════════════════════════════════════════ -->
+<section id="how">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-label">02</p>
+      <h2 class="section-title">How Does <span>AI Work?</span></h2>
+      <div class="gold-rule"></div>
+    </div>
+    <div class="two-col" style="margin: 2rem 0;">
+      <div class="reveal">
+        <div class="steps">
+          <div class="step"><div class="step-num">1</div><h4>Data Input</h4><p>Text, images, numbers, audio — vast quantities collected and fed in.</p></div>
+          <div class="step"><div class="step-num">2</div><h4>Training</h4><p>Algorithms find patterns, adjusting billions of internal parameters.</p></div>
+          <div class="step"><div class="step-num">3</div><h4>Neural Net</h4><p>Layered math structures transform inputs into higher-level patterns.</p></div>
+          <div class="step"><div class="step-num">4</div><h4>Learning</h4><p>Errors are measured; the model adjusts itself automatically — millions of times.</p></div>
+          <div class="step"><div class="step-num">5</div><h4>Output</h4><p>Predictions, generated text, decisions, detections.</p></div>
+        </div>
+        <div class="accent-card" style="margin-top:2rem;">A helpful analogy: AI is like a student who has read billions of documents and become expert at pattern recognition — but has no genuine understanding of what any of it means.</div>
+      </div>
+      <div class="reveal svg-wrap">
+        <!-- SVG: Training loop diagram -->
+        <svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arr" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+              <path d="M0,0 L8,4 L0,8 Z" fill="#3B9FE8"/>
+            </marker>
+          </defs>
+          <!-- Central brain -->
+          <circle cx="150" cy="150" r="55" fill="rgba(26,111,191,0.15)" stroke="#3B9FE8" stroke-width="1.5"/>
+          <text x="150" y="143" text-anchor="middle" fill="#3B9FE8" font-size="28">🧠</text>
+          <text x="150" y="165" text-anchor="middle" fill="white" font-size="10" font-weight="bold">MODEL</text>
+          <!-- Data -->
+          <rect x="5" y="60" width="75" height="40" rx="8" fill="rgba(245,166,35,0.15)" stroke="#F5A623" stroke-width="1"/>
+          <text x="42" y="79" text-anchor="middle" fill="#F5A623" font-size="10" font-weight="bold">DATA</text>
+          <text x="42" y="93" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="8">Input</text>
+          <line x1="80" y1="85" x2="92" y2="118" stroke="#3B9FE8" stroke-width="1.5" marker-end="url(#arr)"/>
+          <!-- Prediction -->
+          <rect x="220" y="60" width="75" height="40" rx="8" fill="rgba(13,148,136,0.15)" stroke="#0D9488" stroke-width="1"/>
+          <text x="258" y="79" text-anchor="middle" fill="#0D9488" font-size="10" font-weight="bold">OUTPUT</text>
+          <text x="258" y="93" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="8">Prediction</text>
+          <line x1="208" y1="118" x2="220" y2="85" stroke="#3B9FE8" stroke-width="1.5" marker-end="url(#arr)"/>
+          <!-- Error -->
+          <rect x="220" y="200" width="75" height="40" rx="8" fill="rgba(192,57,43,0.15)" stroke="#C0392B" stroke-width="1"/>
+          <text x="258" y="219" text-anchor="middle" fill="#C0392B" font-size="10" font-weight="bold">ERROR</text>
+          <text x="258" y="233" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="8">Measure</text>
+          <line x1="258" y1="200" x2="220" y2="182" stroke="#3B9FE8" stroke-width="1.5" marker-end="url(#arr)"/>
+          <!-- Adjust -->
+          <rect x="5" y="200" width="75" height="40" rx="8" fill="rgba(107,63,160,0.15)" stroke="#6B3FA0" stroke-width="1"/>
+          <text x="42" y="219" text-anchor="middle" fill="#6B3FA0" font-size="10" font-weight="bold">ADJUST</text>
+          <text x="258" y="233" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="8"/>
+          <text x="42" y="233" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="8">Backprop</text>
+          <line x1="80" y1="215" x2="220" y2="215" stroke="#6B3FA0" stroke-width="1.5" stroke-dasharray="4" marker-end="url(#arr)"/>
+          <line x1="42" y1="200" x2="92" y2="182" stroke="#3B9FE8" stroke-width="1.5" marker-end="url(#arr)"/>
+          <text x="150" y="257" text-anchor="middle" fill="rgba(255,255,255,0.3)" font-size="8" font-family="monospace">Repeats millions of times</text>
+        </svg>
+      </div>
+    </div>
+    <div class="three-col reveal">
+      <div class="card"><div class="card-icon">📚</div><h3>Machine Learning</h3><p>Systems improve from experience without being explicitly programmed for every outcome.</p></div>
+      <div class="card"><div class="card-icon">🔬</div><h3>Deep Learning</h3><p>Many-layered neural networks — the engine behind today's most impressive AI capabilities.</p></div>
+      <div class="card"><div class="card-icon">💬</div><h3>NLP & Reinforcement</h3><p>Language understanding powers ChatGPT; reward-based learning teaches AI to play games and control robots.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     AI IN SPACE
+════════════════════════════════════════════════ -->
+<section id="space">
+  <div class="container">
+    <div class="two-col-left">
+      <div class="reveal">
+        <p class="section-label">03</p>
+        <h2 class="section-title">AI in <span>Space</span></h2>
+        <h3 style="color:var(--sky); font-size:1.1rem; margin-bottom:1.25rem; font-weight:500;">Intelligent Satellites & Orbital Computing</h3>
+        <div class="gold-rule"></div>
+        <ul class="bullets" style="margin-bottom:1.5rem;">
+          <li><strong>ESA Φsat-2 (2024):</strong> Runs 6 AI apps onboard simultaneously — cloud detection, wildfire spotting, ship identification, image compression, all processed in orbit before downlink.</li>
+          <li><strong>NASA Dynamic Targeting:</strong> AI scans ahead along the orbital path, identifies cloud-free windows and rare events like wildfires, autonomously re-aims the sensor — in under 90 seconds, no humans involved.</li>
+          <li><strong>China JigonGPT (Dec 2024):</strong> First satellite running an onboard generative AI (LLM) capable of real-time conversations from orbit.</li>
+          <li><strong>Satellogic AI-First:</strong> Satellites designed from the ground up around AI use cases. Onboard GPUs analyze imagery before the satellite completes a single orbit pass.</li>
+        </ul>
+        <div class="accent-card">Traditional satellites: capture → downlink → process on the ground. Days of delay.<br><strong style="color:var(--sky);">AI satellites: see, think, and decide in orbit.</strong> Minutes to insight.</div>
+      </div>
+      <div class="reveal svg-wrap">
+        <!-- SVG: Satellite with AI brain orbiting Earth -->
+        <svg viewBox="0 0 280 320" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="earthGrad" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#1a5f9e"/>
+              <stop offset="100%" stop-color="#0d3d6e"/>
+            </radialGradient>
+          </defs>
+          <!-- Stars -->
+          <circle cx="20" cy="20" r="1.5" fill="white" opacity="0.6"/>
+          <circle cx="55" cy="10" r="1" fill="white" opacity="0.8"/>
+          <circle cx="240" cy="35" r="1.5" fill="white" opacity="0.5"/>
+          <circle cx="260" cy="80" r="1" fill="white" opacity="0.7"/>
+          <circle cx="15" cy="110" r="1" fill="white" opacity="0.6"/>
+          <circle cx="265" cy="200" r="1.5" fill="white" opacity="0.5"/>
+          <circle cx="30" cy="260" r="1" fill="white" opacity="0.8"/>
+          <!-- Earth -->
+          <circle cx="140" cy="220" r="85" fill="url(#earthGrad)"/>
+          <ellipse cx="130" cy="190" rx="25" ry="35" fill="rgba(39,174,96,0.6)"/>
+          <ellipse cx="165" cy="210" rx="18" ry="22" fill="rgba(39,174,96,0.5)"/>
+          <ellipse cx="115" cy="240" rx="12" ry="16" fill="rgba(39,174,96,0.4)"/>
+          <ellipse cx="160" cy="245" rx="20" ry="12" fill="rgba(39,174,96,0.35)"/>
+          <!-- Orbit ring -->
+          <ellipse cx="140" cy="165" rx="115" ry="35" fill="none" stroke="rgba(59,159,232,0.25)" stroke-width="1.5" stroke-dasharray="6 4"/>
+          <!-- Satellite body -->
+          <rect x="108" y="58" width="44" height="30" rx="5" fill="#1A6FBF"/>
+          <rect x="115" y="63" width="30" height="20" rx="3" fill="#0d3d6e"/>
+          <!-- Solar panels -->
+          <rect x="60" y="63" width="46" height="12" rx="3" fill="#F5A623" opacity="0.9"/>
+          <rect x="154" y="63" width="46" height="12" rx="3" fill="#F5A623" opacity="0.9"/>
+          <!-- Panel cells -->
+          <line x1="75" y1="63" x2="75" y2="75" stroke="rgba(0,0,0,0.3)" stroke-width="1"/>
+          <line x1="90" y1="63" x2="90" y2="75" stroke="rgba(0,0,0,0.3)" stroke-width="1"/>
+          <line x1="169" y1="63" x2="169" y2="75" stroke="rgba(0,0,0,0.3)" stroke-width="1"/>
+          <line x1="184" y1="63" x2="184" y2="75" stroke="rgba(0,0,0,0.3)" stroke-width="1"/>
+          <!-- AI signal beams -->
+          <line x1="140" y1="88" x2="140" y2="148" stroke="#3B9FE8" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.7">
+            <animate attributeName="opacity" values="0.7;0.2;0.7" dur="2s" repeatCount="indefinite"/>
+          </line>
+          <line x1="138" y1="148" x2="110" y2="175" stroke="#3B9FE8" stroke-width="1" stroke-dasharray="3 3" opacity="0.5"/>
+          <line x1="142" y1="148" x2="170" y2="175" stroke="#3B9FE8" stroke-width="1" stroke-dasharray="3 3" opacity="0.5"/>
+          <!-- AI chip indicator -->
+          <rect x="121" y="66" width="18" height="14" rx="2" fill="#F5A623" opacity="0.9">
+            <animate attributeName="opacity" values="0.9;0.4;0.9" dur="1.5s" repeatCount="indefinite"/>
+          </rect>
+          <text x="130" y="76" text-anchor="middle" fill="white" font-size="7" font-weight="bold">AI</text>
+          <!-- Labels -->
+          <text x="140" y="47" text-anchor="middle" fill="#3B9FE8" font-size="10" font-weight="bold">🛰️ AI SATELLITE</text>
+          <text x="140" y="310" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="8">Edge computing in orbit</text>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Orbital Data Centers stats -->
+    <div style="margin-top:3rem;" class="reveal">
+      <p style="color:var(--gold); font-family:'JetBrains Mono',monospace; font-size:0.75rem; letter-spacing:0.2em; margin-bottom:1.5rem;">ORBITAL DATA CENTERS — THE NEXT FRONTIER</p>
+      <div class="three-col">
+        <div class="stat-box">
+          <div class="stat-number">1,000,000</div>
+          <div class="stat-label">Satellites — SpaceX/xAI FCC Filing (Jan 2026)<br>Orbital AI data center megaconstellation</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number">$39B</div>
+          <div class="stat-label">Projected orbital data center market by 2035<br>Growing at 67% CAGR from $1.77B in 2029</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number">90 sec</div>
+          <div class="stat-label">NASA Dynamic Targeting cycle time<br>Zero human involvement — end-to-end autonomous</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     WHY SPACE
+════════════════════════════════════════════════ -->
+<section id="space2">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-label">04</p>
+      <h2 class="section-title">Why <span>Space?</span> The Case & The Challenges</h2>
+      <div class="gold-rule"></div>
+    </div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:2rem; margin-top:2rem;" class="reveal">
+      <div>
+        <p style="color:var(--sky); font-family:'JetBrains Mono',monospace; font-size:0.75rem; letter-spacing:0.2em; margin-bottom:1.25rem;">THE CASE FOR ORBITAL AI</p>
+        <div class="challenge-grid" style="gap:0.75rem;">
+          <div class="challenge-item" style="border-color:var(--sky);">
+            <h4>☀️ Unlimited Solar Power</h4>
+            <p>Space is always sunny. Polar orbit = near-continuous energy. No grid, no fuel, no utility bills.</p>
+          </div>
+          <div class="challenge-item" style="border-color:var(--gold);">
+            <h4>🌐 Global Coverage</h4>
+            <p>AI computing delivered to any location on Earth — remote, maritime, polar, defense applications.</p>
+          </div>
+          <div class="challenge-item" style="border-color:var(--teal);">
+            <h4>🏢 No Real Estate Limits</h4>
+            <p>Land, water rights, zoning — scarce on Earth. Space has none of these constraints.</p>
+          </div>
+          <div class="challenge-item" style="border-color:var(--green);">
+            <h4>⚡ Instant Intelligence</h4>
+            <p>Process petabytes in orbit — disaster response in minutes, not days.</p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <p style="color:var(--red); font-family:'JetBrains Mono',monospace; font-size:0.75rem; letter-spacing:0.2em; margin-bottom:1.25rem;">THE HARD PROBLEMS</p>
+        <div class="challenge-grid" style="gap:0.75rem;">
+          <div class="challenge-item" style="border-color:var(--red);">
+            <h4>🔥 Heat Is the Enemy</h4>
+            <p>No convection in vacuum. All chip heat must be radiated away. ISS full array = one car engine.</p>
+          </div>
+          <div class="challenge-item" style="border-color:var(--orange);">
+            <h4>💫 Radiation Kills Chips</h4>
+            <p>Cosmic rays bombard electronics. Standard chips fail within days. Hardened chips lag by years.</p>
+          </div>
+          <div class="challenge-item" style="border-color:var(--purple);">
+            <h4>🚀 Launch Cost</h4>
+            <p>~$1,000/kg today. Google says $200/kg needed. SpaceX Starship must succeed.</p>
+          </div>
+          <div class="challenge-item" style="border-color:var(--midgray);">
+            <h4>🌌 Space Debris</h4>
+            <p>1M satellites transforms the night sky. FAA: debris reentry could kill 1 person/2 years by 2035.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="accent-card reveal" style="margin-top:2rem;">
+      February 2025: Lonestar Data Holdings delivered the first data center to the Moon aboard Intuitive Machines' Athena lander. <strong style="color:var(--gold);">Off-world computing is no longer theoretical.</strong> The race is real, competitive, and geopolitical — the US, China, and Europe are all moving.
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     FUTURE APPLICATIONS
+════════════════════════════════════════════════ -->
+<section id="future">
+  <div class="container">
+    <div class="two-col-left">
+      <div>
+        <p class="section-label reveal">05</p>
+        <h2 class="section-title reveal">Potential <span>Future Applications</span></h2>
+        <div class="gold-rule reveal"></div>
+        <div class="timeline reveal">
+          <div class="tl-item">
+            <div class="tl-label">NEAR TERM — EMERGING NOW</div>
+            <div class="tl-title">Autonomous Systems</div>
+            <div class="tl-body">Self-driving logistics, drone delivery networks, AI-guided surgical robots with superhuman precision — already being deployed commercially.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-label">NEAR TERM — ACCELERATING</div>
+            <div class="tl-title">Scientific Discovery</div>
+            <div class="tl-body">AI already helping identify drug candidates, model climate systems, and discover clean energy materials. Drug discovery timelines compressed from years to months.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-label">MID TERM — 3–10 YEARS</div>
+            <div class="tl-title">Smart Cities & Infrastructure</div>
+            <div class="tl-body">AI managing power grids, water systems, and traffic in real time — optimizing an entire city's infrastructure autonomously.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-label">LONG TERM — SPECULATIVE</div>
+            <div class="tl-title">Planetary-Scale AI</div>
+            <div class="tl-body">Orbital AI supporting deep space missions, climate modeling at global scale, and autonomous systems operating throughout the solar system.</div>
+          </div>
+        </div>
+      </div>
+      <div class="svg-wrap reveal">
+        <!-- SVG: Rocket / Future illustration -->
+        <svg viewBox="0 0 260 340" xmlns="http://www.w3.org/2000/svg">
+          <!-- Stars -->
+          <circle cx="30" cy="30" r="1.5" fill="white" opacity="0.7"/>
+          <circle cx="80" cy="15" r="1" fill="white" opacity="0.5"/>
+          <circle cx="210" cy="40" r="2" fill="white" opacity="0.6"/>
+          <circle cx="240" cy="100" r="1" fill="white" opacity="0.8"/>
+          <circle cx="20" cy="180" r="1.5" fill="white" opacity="0.5"/>
+          <circle cx="245" cy="220" r="1" fill="white" opacity="0.7"/>
+          <!-- Rocket body -->
+          <path d="M130 20 L155 80 L155 200 L105 200 L105 80 Z" fill="#1A6FBF"/>
+          <!-- Nose cone -->
+          <path d="M105 80 L130 20 L155 80 Z" fill="#3B9FE8"/>
+          <!-- Window -->
+          <circle cx="130" cy="120" r="18" fill="#0d3d6e" stroke="#3B9FE8" stroke-width="2"/>
+          <circle cx="130" cy="120" r="12" fill="#070D1A"/>
+          <text x="130" y="125" text-anchor="middle" fill="#F5A623" font-size="14">AI</text>
+          <!-- Fins -->
+          <path d="M105 200 L80 240 L105 220 Z" fill="#1A6FBF"/>
+          <path d="M155 200 L180 240 L155 220 Z" fill="#1A6FBF"/>
+          <!-- Flame -->
+          <ellipse cx="130" cy="248" rx="18" ry="30" fill="rgba(245,166,35,0.6)">
+            <animate attributeName="ry" values="30;36;28;32;30" dur="0.4s" repeatCount="indefinite"/>
+          </ellipse>
+          <ellipse cx="130" cy="248" rx="10" ry="20" fill="rgba(255,100,30,0.8)">
+            <animate attributeName="ry" values="20;26;18;22;20" dur="0.3s" repeatCount="indefinite"/>
+          </ellipse>
+          <ellipse cx="130" cy="245" rx="5" ry="12" fill="white" opacity="0.8"/>
+          <!-- Data nodes orbiting -->
+          <circle cx="60" cy="130" r="8" fill="rgba(13,148,136,0.3)" stroke="#0D9488" stroke-width="1.5"/>
+          <text x="60" y="134" text-anchor="middle" fill="#0D9488" font-size="8">🌡</text>
+          <circle cx="200" cy="90" r="8" fill="rgba(107,63,160,0.3)" stroke="#6B3FA0" stroke-width="1.5"/>
+          <text x="200" y="94" text-anchor="middle" fill="#6B3FA0" font-size="8">🔬</text>
+          <circle cx="195" cy="160" r="8" fill="rgba(39,174,96,0.3)" stroke="#27AE60" stroke-width="1.5"/>
+          <text x="195" y="164" text-anchor="middle" fill="#27AE60" font-size="8">🌱</text>
+          <!-- Dashed orbit lines -->
+          <line x1="68" y1="130" x2="105" y2="130" stroke="rgba(13,148,136,0.3)" stroke-width="1" stroke-dasharray="3 3"/>
+          <line x1="192" y1="90" x2="155" y2="100" stroke="rgba(107,63,160,0.3)" stroke-width="1" stroke-dasharray="3 3"/>
+          <line x1="187" y1="160" x2="155" y2="150" stroke="rgba(39,174,96,0.3)" stroke-width="1" stroke-dasharray="3 3"/>
+          <text x="130" y="320" text-anchor="middle" fill="rgba(255,255,255,0.3)" font-size="8" font-family="monospace">The question is not whether —</text>
+          <text x="130" y="332" text-anchor="middle" fill="rgba(255,255,255,0.3)" font-size="8" font-family="monospace">but how wisely we guide it.</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     THEOLOGY
+════════════════════════════════════════════════ -->
+<section id="theology">
+  <div class="container">
+    <div class="two-col">
+      <div class="svg-wrap reveal">
+        <!-- SVG: Cross / Imago Dei illustration -->
+        <svg viewBox="0 0 280 300" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="theoglow" cx="50%" cy="45%" r="50%">
+              <stop offset="0%" stop-color="#6B3FA0" stop-opacity="0.4"/>
+              <stop offset="100%" stop-color="#6B3FA0" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <ellipse cx="140" cy="135" rx="120" ry="110" fill="url(#theoglow)"/>
+          <!-- Human silhouette -->
+          <circle cx="140" cy="60" r="22" fill="none" stroke="rgba(107,63,160,0.6)" stroke-width="2"/>
+          <circle cx="140" cy="60" r="16" fill="rgba(107,63,160,0.2)"/>
+          <text x="140" y="66" text-anchor="middle" fill="rgba(107,63,160,0.9)" font-size="18">✦</text>
+          <!-- Body -->
+          <path d="M120 82 Q140 78 160 82 L165 145 L155 145 L150 115 L150 195 L130 195 L130 115 L125 145 L115 145 Z" fill="rgba(107,63,160,0.3)" stroke="rgba(107,63,160,0.5)" stroke-width="1"/>
+          <!-- Arms -->
+          <line x1="115" y1="100" x2="85" y2="130" stroke="rgba(107,63,160,0.5)" stroke-width="2"/>
+          <line x1="165" y1="100" x2="195" y2="130" stroke="rgba(107,63,160,0.5)" stroke-width="2"/>
+          <!-- Cross/Plus above -->
+          <line x1="140" y1="20" x2="140" y2="38" stroke="#6B3FA0" stroke-width="2.5"/>
+          <line x1="130" y1="29" x2="150" y2="29" stroke="#6B3FA0" stroke-width="2.5"/>
+          <!-- Light rays -->
+          <line x1="140" y1="5" x2="140" y2="18" stroke="rgba(107,63,160,0.4)" stroke-width="1.5"/>
+          <line x1="110" y1="12" x2="120" y2="22" stroke="rgba(107,63,160,0.3)" stroke-width="1.5"/>
+          <line x1="170" y1="12" x2="160" y2="22" stroke="rgba(107,63,160,0.3)" stroke-width="1.5"/>
+          <!-- Six theology boxes -->
+          <g font-size="9" font-family="sans-serif">
+            <rect x="10" y="215" width="80" height="36" rx="6" fill="rgba(107,63,160,0.2)" stroke="rgba(107,63,160,0.4)" stroke-width="1"/>
+            <text x="50" y="230" text-anchor="middle" fill="#a78bfa" font-weight="bold">Imago Dei</text>
+            <text x="50" y="244" text-anchor="middle" fill="rgba(255,255,255,0.5)">Gen 1:27</text>
+            <rect x="100" y="215" width="80" height="36" rx="6" fill="rgba(26,111,191,0.2)" stroke="rgba(26,111,191,0.4)" stroke-width="1"/>
+            <text x="140" y="230" text-anchor="middle" fill="#60a5fa" font-weight="bold">Stewardship</text>
+            <text x="140" y="244" text-anchor="middle" fill="rgba(255,255,255,0.5)">Gen 2:15</text>
+            <rect x="190" y="215" width="80" height="36" rx="6" fill="rgba(192,57,43,0.2)" stroke="rgba(192,57,43,0.4)" stroke-width="1"/>
+            <text x="230" y="230" text-anchor="middle" fill="#f87171" font-weight="bold">Salvation</text>
+            <text x="230" y="244" text-anchor="middle" fill="rgba(255,255,255,0.5)">Christ alone</text>
+            <rect x="10" y="258" width="80" height="36" rx="6" fill="rgba(13,148,136,0.2)" stroke="rgba(13,148,136,0.4)" stroke-width="1"/>
+            <text x="50" y="273" text-anchor="middle" fill="#34d399" font-weight="bold">Dignity</text>
+            <text x="50" y="287" text-anchor="middle" fill="rgba(255,255,255,0.5)">Sacred worth</text>
+            <rect x="100" y="258" width="80" height="36" rx="6" fill="rgba(245,166,35,0.2)" stroke="rgba(245,166,35,0.4)" stroke-width="1"/>
+            <text x="140" y="273" text-anchor="middle" fill="#fbbf24" font-weight="bold">Consciousness</text>
+            <text x="140" y="287" text-anchor="middle" fill="rgba(255,255,255,0.5)">Gen 2:7</text>
+            <rect x="190" y="258" width="80" height="36" rx="6" fill="rgba(107,63,160,0.2)" stroke="rgba(107,63,160,0.4)" stroke-width="1"/>
+            <text x="230" y="273" text-anchor="middle" fill="#c084fc" font-weight="bold">Hope</text>
+            <text x="230" y="287" text-anchor="middle" fill="rgba(255,255,255,0.5)">Rev 21</text>
+          </g>
+          <!-- Connecting lines -->
+          <line x1="50" y1="215" x2="100" y2="195" stroke="rgba(107,63,160,0.2)" stroke-width="1" stroke-dasharray="3 3"/>
+          <line x1="140" y1="215" x2="140" y2="195" stroke="rgba(107,63,160,0.2)" stroke-width="1" stroke-dasharray="3 3"/>
+          <line x1="230" y1="215" x2="180" y2="195" stroke="rgba(107,63,160,0.2)" stroke-width="1" stroke-dasharray="3 3"/>
+        </svg>
+      </div>
+      <div class="reveal">
+        <p class="section-label">06</p>
+        <h2 class="section-title">Theological <span>Implications</span></h2>
+        <div class="gold-rule"></div>
+        <ul class="bullets">
+          <li><strong>Imago Dei:</strong> Genesis 1:27 teaches humans are made in God's image. AI raises the question: can a machine bear this image? Most theologians say no — the imago involves personhood, moral accountability, and relationship with God.</li>
+          <li><strong>Human Dignity:</strong> Christianity insists on the irreducible worth of every person. AI must never dehumanize, replace, or exploit human beings.</li>
+          <li><strong>Stewardship:</strong> Genesis 2:15 calls us to care for creation responsibly — including stewarding powerful technologies for justice and the common good.</li>
+          <li><strong>Consciousness & Soul:</strong> If AI appears to "feel," it sharpens the question: what distinguishes human consciousness? God breathed life into us (Gen. 2:7).</li>
+          <li><strong>Salvation & Personhood:</strong> AI cannot sin, repent, or receive grace. Redemption through Christ is for persons — not machines.</li>
+          <li><strong>Hope:</strong> Our ultimate hope is not in technology but in Christ's return (Rev. 21). AI can serve the common good — but it cannot save us.</li>
+        </ul>
+        <div class="accent-card" style="margin-top:1.5rem; border-left-color:var(--purple);">
+          <strong style="color:var(--purple);">Key pastoral message:</strong> AI is a tool, not a savior. The Church is called to engage it critically, use it wisely, and keep human dignity and divine sovereignty at the center.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     MISINFORMATION
+════════════════════════════════════════════════ -->
+<section id="misinfo">
+  <div class="container">
+    <div class="two-col-left">
+      <div class="reveal">
+        <p class="section-label">07</p>
+        <h2 class="section-title">AI & the <span style="color:var(--red);">Misinformation</span> Crisis</h2>
+        <div class="gold-rule"></div>
+        <div class="three-col" style="margin: 1.5rem 0;">
+          <div class="card" style="border-color:rgba(192,57,43,0.3);">
+            <div class="card-icon">🎭</div>
+            <h3 style="color:var(--red);">Deepfakes at Scale</h3>
+            <p>AI generates hyper-realistic fake video, audio, and images. Humans identify AI voices at barely better than chance. Feb 2024: $25M transferred via deepfake Zoom call.</p>
+          </div>
+          <div class="card" style="border-color:rgba(192,57,43,0.3);">
+            <div class="card-icon">📰</div>
+            <h3 style="color:var(--red);">Synthetic Text Floods</h3>
+            <p>LLMs produce thousands of convincing fake articles per second — far faster than any human fact-checking operation can respond.</p>
+          </div>
+          <div class="card" style="border-color:rgba(192,57,43,0.3);">
+            <div class="card-icon">🎯</div>
+            <h3 style="color:var(--red);">Hyper-Targeted Propaganda</h3>
+            <p>AI profiles individuals and delivers disinformation tailored to their specific beliefs and psychological vulnerabilities.</p>
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:1rem; margin: 1.5rem 0;">
+          <div class="stat-box"><div class="stat-number" style="font-size:2.2rem;">16×</div><div class="stat-label">Deepfake surge<br>500K (2023) → 8M (2025)</div></div>
+          <div class="stat-box"><div class="stat-number" style="font-size:2.2rem;">$25M</div><div class="stat-label">Lost in single deepfake<br>Zoom call — Feb 2024</div></div>
+          <div class="stat-box"><div class="stat-number" style="font-size:2.2rem;">#1</div><div class="stat-label">WEF global risk ranking<br>2024 & 2025 — misinformation</div></div>
+        </div>
+        <div class="accent-card" style="border-left-color:var(--red);">"The goal of disinformation is not to make you believe false things — it's to make you <strong>doubt everything.</strong>"</div>
+      </div>
+      <div class="svg-wrap reveal">
+        <!-- SVG: Broken trust / cracked shield -->
+        <svg viewBox="0 0 240 280" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="redglow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#C0392B" stop-opacity="0.3"/>
+              <stop offset="100%" stop-color="#C0392B" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <ellipse cx="120" cy="140" rx="100" ry="100" fill="url(#redglow)"/>
+          <!-- Shield -->
+          <path d="M120 30 L185 60 L185 130 Q185 190 120 220 Q55 190 55 130 L55 60 Z" fill="rgba(192,57,43,0.15)" stroke="rgba(192,57,43,0.5)" stroke-width="2"/>
+          <!-- Crack lines -->
+          <path d="M120 55 L105 100 L125 120 L100 180" stroke="#C0392B" stroke-width="2.5" fill="none" opacity="0.8">
+            <animate attributeName="opacity" values="0.8;0.4;0.8" dur="3s" repeatCount="indefinite"/>
+          </path>
+          <path d="M125 120 L145 140 L135 175" stroke="#C0392B" stroke-width="1.5" fill="none" opacity="0.6"/>
+          <path d="M105 100 L85 110 L95 130" stroke="#C0392B" stroke-width="1.5" fill="none" opacity="0.5"/>
+          <!-- Question marks (doubt) -->
+          <text x="80" y="90" fill="rgba(192,57,43,0.6)" font-size="18" font-weight="bold">?</text>
+          <text x="150" y="80" fill="rgba(192,57,43,0.5)" font-size="14" font-weight="bold">?</text>
+          <text x="90" y="160" fill="rgba(192,57,43,0.4)" font-size="22" font-weight="bold">?</text>
+          <text x="145" y="155" fill="rgba(192,57,43,0.6)" font-size="16" font-weight="bold">?</text>
+          <!-- Warning symbol -->
+          <path d="M120 70 L145 115 L95 115 Z" fill="rgba(245,166,35,0.2)" stroke="#F5A623" stroke-width="1.5"/>
+          <text x="120" y="110" text-anchor="middle" fill="#F5A623" font-size="18" font-weight="bold">!</text>
+          <!-- Labels -->
+          <text x="120" y="245" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="9" font-family="monospace">TRUST ERODING</text>
+          <text x="120" y="260" text-anchor="middle" fill="rgba(192,57,43,0.6)" font-size="8" font-family="monospace">Can you believe what you see?</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     TRUST COLLAPSE
+════════════════════════════════════════════════ -->
+<section id="trust">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-label">08</p>
+      <h2 class="section-title">The <span style="color:var(--red);">Trust Collapse</span> — A Coming Crisis</h2>
+      <div class="gold-rule"></div>
+      <p style="color:var(--midgray); max-width:700px; line-height:1.75; margin-bottom:2rem;">As AI-generated content becomes indistinguishable from reality, we approach a dangerous threshold: a world where people can no longer trust anything they see, hear, or read online.</p>
+    </div>
+    <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:1.25rem; margin-bottom:2.5rem;" class="reveal">
+      <div style="padding:1.25rem; border-radius:10px; background:rgba(26,111,191,0.12); border:1px solid rgba(26,111,191,0.3); border-top:3px solid var(--blue);">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:0.65rem;letter-spacing:0.2em;color:var(--sky);margin-bottom:0.75rem;">NOW</div>
+        <div style="font-size:1rem;font-weight:700;margin-bottom:0.5rem;">Growing Doubt</div>
+        <div style="font-size:0.82rem;color:var(--midgray);line-height:1.55;">Trust in media hits historic lows. Viral fakes spread faster than corrections.</div>
+      </div>
+      <div style="padding:1.25rem; border-radius:10px; background:rgba(217,119,6,0.12); border:1px solid rgba(217,119,6,0.3); border-top:3px solid var(--orange);">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:0.65rem;letter-spacing:0.2em;color:var(--orange);margin-bottom:0.75rem;">SOON</div>
+        <div style="font-size:1rem;font-weight:700;margin-bottom:0.5rem;">Verification Crisis</div>
+        <div style="font-size:0.82rem;color:var(--midgray);line-height:1.55;">Deepfakes of public figures routine. Authenticity labels widely ignored or faked.</div>
+      </div>
+      <div style="padding:1.25rem; border-radius:10px; background:rgba(192,57,43,0.12); border:1px solid rgba(192,57,43,0.4); border-top:3px solid var(--red);">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:0.65rem;letter-spacing:0.2em;color:var(--red);margin-bottom:0.75rem;">NEAR</div>
+        <div style="font-size:1rem;font-weight:700;margin-bottom:0.5rem;">Epistemic Breakdown</div>
+        <div style="font-size:0.82rem;color:var(--midgray);line-height:1.55;">Institutions lose credibility. Even true content is dismissed as fake.</div>
+      </div>
+      <div style="padding:1.25rem; border-radius:10px; background:rgba(139,26,26,0.15); border:1px solid rgba(139,26,26,0.4); border-top:3px solid #8B1A1A;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:0.65rem;letter-spacing:0.2em;color:#c0392b;margin-bottom:0.75rem;">FUTURE RISK</div>
+        <div style="font-size:1rem;font-weight:700;margin-bottom:0.5rem;">Trust Collapse</div>
+        <div style="font-size:0.82rem;color:var(--midgray);line-height:1.55;">Society loses shared factual agreement. Democracy, science, and law face existential pressure.</div>
+      </div>
+    </div>
+    <div class="three-col reveal">
+      <div class="card" style="border-color:rgba(59,159,232,0.3);">
+        <div class="card-icon">🔐</div><h3 style="color:var(--sky);">Technical Response</h3>
+        <p>Cryptographic content provenance (C2PA standard), AI detection tools, platform labeling mandates — building authentication into the content layer.</p>
+      </div>
+      <div class="card" style="border-color:rgba(39,174,96,0.3);">
+        <div class="card-icon">📖</div><h3 style="color:var(--green);">Educational Response</h3>
+        <p>Media literacy programs teaching how AI-generated content is made and how to question sources. A necessary foundation for any future democracy.</p>
+      </div>
+      <div class="card" style="border-color:rgba(107,63,160,0.3);">
+        <div class="card-icon">✝️</div><h3 style="color:#c084fc;">Moral Response</h3>
+        <p>A Christian call to truthfulness — <em>"You will know the truth, and the truth will set you free"</em> (John 8:32). Communities of trust built on integrity.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     CONCLUSION
+════════════════════════════════════════════════ -->
+<section id="conclusion">
+  <div class="container">
+    <div style="text-align:center; max-width:800px; margin: 0 auto;">
+      <p class="section-label reveal" style="justify-content:center;">IN SUMMARY</p>
+      <h2 class="section-title reveal" style="text-align:center;">Navigating AI <span>with Wisdom</span></h2>
+      <div style="width:60px;height:3px;background:var(--gold);margin:1.5rem auto;" class="reveal"></div>
+      <!-- SVG: Compass / wisdom illustration -->
+      <div class="reveal" style="margin: 2rem auto; max-width:200px;">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="100" cy="100" r="90" fill="none" stroke="rgba(245,166,35,0.2)" stroke-width="1.5"/>
+          <circle cx="100" cy="100" r="70" fill="none" stroke="rgba(245,166,35,0.1)" stroke-width="1"/>
+          <circle cx="100" cy="100" r="6" fill="var(--gold)"/>
+          <!-- Compass needle -->
+          <path d="M100 100 L100 30" stroke="#F5A623" stroke-width="3" stroke-linecap="round"/>
+          <path d="M100 100 L100 170" stroke="rgba(245,166,35,0.3)" stroke-width="2" stroke-linecap="round"/>
+          <path d="M100 100 L30 100" stroke="rgba(245,166,35,0.3)" stroke-width="2" stroke-linecap="round"/>
+          <path d="M100 100 L170 100" stroke="rgba(245,166,35,0.3)" stroke-width="2" stroke-linecap="round"/>
+          <polygon points="100,26 96,42 100,38 104,42" fill="#F5A623"/>
+          <!-- NSEW -->
+          <text x="100" y="18" text-anchor="middle" fill="var(--gold)" font-size="12" font-weight="bold" font-family="monospace">N</text>
+          <text x="100" y="192" text-anchor="middle" fill="rgba(245,166,35,0.4)" font-size="10" font-family="monospace">S</text>
+          <text x="185" y="105" text-anchor="middle" fill="rgba(245,166,35,0.4)" font-size="10" font-family="monospace">E</text>
+          <text x="15" y="105" text-anchor="middle" fill="rgba(245,166,35,0.4)" font-size="10" font-family="monospace">W</text>
+          <!-- Tick marks -->
+          <g stroke="rgba(245,166,35,0.3)" stroke-width="1">
+            <line x1="100" y1="10" x2="100" y2="18"/>
+            <line x1="190" y1="100" x2="182" y2="100"/>
+            <line x1="100" y1="190" x2="100" y2="182"/>
+            <line x1="10" y1="100" x2="18" y2="100"/>
+          </g>
+        </svg>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; text-align:left; margin:2rem 0;" class="reveal">
+        <div style="padding:1rem 1.25rem; background:rgba(255,255,255,0.04); border-radius:8px; border-left:2px solid var(--gold);">
+          <p style="font-size:0.88rem; color:rgba(255,255,255,0.8); line-height:1.65;">AI simulates human intelligence — it learns, reasons, and solves problems, but is not sentient, conscious, or spiritually alive.</p>
+        </div>
+        <div style="padding:1rem 1.25rem; background:rgba(255,255,255,0.04); border-radius:8px; border-left:2px solid var(--sky);">
+          <p style="font-size:0.88rem; color:rgba(255,255,255,0.8); line-height:1.65;">It works through data, algorithms, and neural networks — a powerful tool, not a mind.</p>
+        </div>
+        <div style="padding:1rem 1.25rem; background:rgba(255,255,255,0.04); border-radius:8px; border-left:2px solid var(--teal);">
+          <p style="font-size:0.88rem; color:rgba(255,255,255,0.8); line-height:1.65;">Today AI transforms industries — even putting computing into orbit, with 1 million satellite data centers now proposed.</p>
+        </div>
+        <div style="padding:1rem 1.25rem; background:rgba(255,255,255,0.04); border-radius:8px; border-left:2px solid var(--purple);">
+          <p style="font-size:0.88rem; color:rgba(255,255,255,0.8); line-height:1.65;">For Christians, AI raises urgent questions about the soul, human dignity, truth, and our responsibility as stewards of creation.</p>
+        </div>
+        <div style="padding:1rem 1.25rem; background:rgba(255,255,255,0.04); border-radius:8px; border-left:2px solid var(--red);">
+          <p style="font-size:0.88rem; color:rgba(255,255,255,0.8); line-height:1.65;">Misinformation powered by AI threatens the foundations of shared truth — the Church must champion integrity and truthfulness.</p>
+        </div>
+        <div style="padding:1rem 1.25rem; background:rgba(255,255,255,0.04); border-radius:8px; border-left:2px solid var(--green);">
+          <p style="font-size:0.88rem; color:rgba(255,255,255,0.8); line-height:1.65;">Technology serves humanity best when guided by wisdom, ethics, and faith — not by profit or power alone.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <p class="scripture">"The fear of the LORD is the beginning of wisdom." — Proverbs 9:10</p>
+  <p>In an age of artificial intelligence, human wisdom rooted in God remains irreplaceable.</p>
+  <p style="margin-top:1.5rem; font-size:0.75rem; opacity:0.5;">Sources: Stanford HAI 2025 AI Index · WEF Global Risks Report 2024 & 2025 · Edelman Trust Barometer 2024 & 2025 · UNESCO (2025) · SpaceNews · NASA JPL · ESA · NPR · MIT Technology Review</p>
+</footer>
+
+<script>
+// ── Stars ──────────────────────────────────────────────────────────────────
+const container = document.getElementById('stars');
+for(let i = 0; i < 120; i++){
+  const s = document.createElement('div');
+  s.className = 'star';
+  const size = Math.random() * 2.5 + 0.5;
+  s.style.cssText = `
+    width:${size}px; height:${size}px;
+    left:${Math.random()*100}%; top:${Math.random()*100}%;
+    --d:${2+Math.random()*4}s; --delay:-${Math.random()*4}s;
+  `;
+  container.appendChild(s);
+}
+
+// ── Progress bar ───────────────────────────────────────────────────────────
+const progress = document.getElementById('progress');
+window.addEventListener('scroll', () => {
+  const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+  progress.style.width = pct + '%';
+});
+
+// ── Nav active state ───────────────────────────────────────────────────────
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-links a');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting){
+      navLinks.forEach(a => {
+        a.classList.toggle('active', a.getAttribute('href') === '#'+e.target.id);
+      });
+    }
+  });
+}, { threshold: 0.4 });
+sections.forEach(s => observer.observe(s));
+
+// ── Scroll reveal ──────────────────────────────────────────────────────────
+const reveals = document.querySelectorAll('.reveal');
+const revealObserver = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if(e.isIntersecting){
+      e.target.style.transitionDelay = (e.target.dataset.delay || 0) + 's';
+      e.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+reveals.forEach(r => revealObserver.observe(r));
+</script>
+</body>
+</html>
